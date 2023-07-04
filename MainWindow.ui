@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QWidget" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>924</width>
+    <height>437</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="1" column="4">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>245</width>
+       <height>17</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="2">
+    <widget class="QFrame" name="frame_2">
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+         </font>
+        </property>
+        <property name="text">
+         <string>开始</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>delivery/Play.ico</normaloff>delivery/Play.ico</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+         </font>
+        </property>
+        <property name="text">
+         <string>复位</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>delivery/reload.ico</normaloff>delivery/reload.ico</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_10">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+         </font>
+        </property>
+        <property name="text">
+         <string>停止</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>delivery/Delete.ico</normaloff>delivery/Delete.ico</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_11">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+         </font>
+        </property>
+        <property name="text">
+         <string>导入</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>delivery/Add.ico</normaloff>delivery/Add.ico</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_9">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+         </font>
+        </property>
+        <property name="text">
+         <string>导出</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>delivery/Down arrow.ico</normaloff>delivery/Down arrow.ico</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QFrame" name="frame">
+     <property name="whatsThis">
+      <string>Connect</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="5">
+       <widget class="QPushButton" name="pushButton_7">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+         </font>
+        </property>
+        <property name="text">
+         <string>连接</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>delivery/Green Ball.ico</normaloff>delivery/Green Ball.ico</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="6">
+       <widget class="QRadioButton" name="radioButton">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QComboBox" name="comboBox_2">
+        <property name="currentText">
+         <string>com0</string>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>com0</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>com1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>com2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>com3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>com4</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>com5</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>com6</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>com7</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>com8</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>com9</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>com10</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>com11</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>com12</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>com13</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>com14</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+         </font>
+        </property>
+        <property name="text">
+         <string>波特率</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="comboBox">
+        <property name="currentText">
+         <string>600bps</string>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>600bps</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>1200bps</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>2400bps</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>4800bps</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>9600bps</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>19200bps</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>115200bps</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_2">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+         </font>
+        </property>
+        <property name="text">
+         <string>端口</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>10</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+     <zorder>label</zorder>
+     <zorder>comboBox</zorder>
+     <zorder>pushButton_7</zorder>
+     <zorder>radioButton</zorder>
+     <zorder>comboBox_2</zorder>
+     <zorder>label_2</zorder>
+     <zorder>horizontalSpacer_2</zorder>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QFrame" name="frame_3">
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+         </font>
+        </property>
+        <property name="text">
+         <string>标定</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>delivery/Blue Ball.ico</normaloff>delivery/Blue Ball.ico</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="5">
+    <widget class="PlotWidget" name="graphicsView">
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <weight>50</weight>
+       <bold>false</bold>
+       <underline>false</underline>
+      </font>
+     </property>
+     <property name="viewportUpdateMode">
+      <enum>QGraphicsView::SmartViewportUpdate</enum>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlotWidget</class>
+   <extends>QGraphicsView</extends>
+   <header>pyqtgraph</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
