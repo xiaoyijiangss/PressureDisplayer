@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'D:/software_development_workspace/signal_displayer/PressureDisplayer/MainWindow.ui'
+# Form implementation generated from reading ui file 'D:/software_development_workspace/serialplotter/serialPlotter/MainWindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #
@@ -30,7 +30,7 @@ class Ui_MainWindow(object):
         font.setFamily("微软雅黑")
         self.pushButton.setFont(font)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("D:/software_development_workspace/signal_displayer/PressureDisplayer\\delivery/Play.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("D:/software_development_workspace/serialplotter/serialPlotter\\delivery/Play.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton.setIcon(icon)
         self.pushButton.setObjectName("pushButton")
         self.horizontalLayout_2.addWidget(self.pushButton)
@@ -39,7 +39,7 @@ class Ui_MainWindow(object):
         font.setFamily("微软雅黑")
         self.pushButton_2.setFont(font)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("D:/software_development_workspace/signal_displayer/PressureDisplayer\\delivery/reload.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("D:/software_development_workspace/serialplotter/serialPlotter\\delivery/reload.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_2.setIcon(icon1)
         self.pushButton_2.setObjectName("pushButton_2")
         self.horizontalLayout_2.addWidget(self.pushButton_2)
@@ -48,7 +48,7 @@ class Ui_MainWindow(object):
         font.setFamily("微软雅黑")
         self.pushButton_10.setFont(font)
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("D:/software_development_workspace/signal_displayer/PressureDisplayer\\delivery/Delete.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap("D:/software_development_workspace/serialplotter/serialPlotter\\delivery/Delete.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_10.setIcon(icon2)
         self.pushButton_10.setObjectName("pushButton_10")
         self.horizontalLayout_2.addWidget(self.pushButton_10)
@@ -57,7 +57,7 @@ class Ui_MainWindow(object):
         font.setFamily("微软雅黑")
         self.pushButton_11.setFont(font)
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("D:/software_development_workspace/signal_displayer/PressureDisplayer\\delivery/Add.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap("D:/software_development_workspace/serialplotter/serialPlotter\\delivery/Add.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_11.setIcon(icon3)
         self.pushButton_11.setObjectName("pushButton_11")
         self.horizontalLayout_2.addWidget(self.pushButton_11)
@@ -66,7 +66,7 @@ class Ui_MainWindow(object):
         font.setFamily("微软雅黑")
         self.pushButton_9.setFont(font)
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("D:/software_development_workspace/signal_displayer/PressureDisplayer\\delivery/Down arrow.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap("D:/software_development_workspace/serialplotter/serialPlotter\\delivery/Down arrow.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_9.setIcon(icon4)
         self.pushButton_9.setObjectName("pushButton_9")
         self.horizontalLayout_2.addWidget(self.pushButton_9)
@@ -82,7 +82,7 @@ class Ui_MainWindow(object):
         font.setFamily("微软雅黑")
         self.pushButton_7.setFont(font)
         icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap("D:/software_development_workspace/signal_displayer/PressureDisplayer\\delivery/Green Ball.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon5.addPixmap(QtGui.QPixmap("D:/software_development_workspace/serialplotter/serialPlotter\\delivery/Green Ball.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_7.setIcon(icon5)
         self.pushButton_7.setObjectName("pushButton_7")
         self.gridLayout.addWidget(self.pushButton_7, 0, 5, 1, 1)
@@ -150,7 +150,7 @@ class Ui_MainWindow(object):
         font.setFamily("微软雅黑")
         self.pushButton_3.setFont(font)
         icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap("D:/software_development_workspace/signal_displayer/PressureDisplayer\\delivery/Blue Ball.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon6.addPixmap(QtGui.QPixmap("D:/software_development_workspace/serialplotter/serialPlotter\\delivery/Blue Ball.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.pushButton_3.setIcon(icon6)
         self.pushButton_3.setObjectName("pushButton_3")
         self.horizontalLayout_3.addWidget(self.pushButton_3)

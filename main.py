@@ -45,6 +45,9 @@ class MainWindowMge(QWidget):
         self.ui.comboBox_2.setCurrentIndex(5)  #modify the default opion
         self.ui.comboBox.setCurrentIndex(6)
 
+        self._led = QLed(self, onColour=QLed.Green, shape=QLed.Circle)
+        self._led.value = False
+        self.ui.gridLayout.addWidget(self._led, 0, 6, 1, 1)
         '''initialize some parameters for serial'''
 
         
@@ -94,7 +97,7 @@ class MainWindowMge(QWidget):
         
         self.T1 = Thread1()
         self.T1.start()
-        MainWindowMge.ui.pushButton.setEnabled(False)
+        self.ui.pushButton.setEnabled(False)
 
     def click_stop(self):
         '''When click the 结束 button, end thread1'''
@@ -119,7 +122,7 @@ class MainWindowMge(QWidget):
         try:
             self.comSerial = serial.Serial(port=self.portx, baudrate=self.bandx,\
                                         timeout=self.timeout, bytesize=8)
-            self.ui.led.value = True
+            self._led.value = True
             self.ui.pushButton_7.setEnabled(False)
         except Exception as ex:
             template = "An exception of type {0} occurred. Arguments:\n{1!r}"
@@ -144,7 +147,7 @@ class Thread1(QThread):
         super().__init__()
 
     def run(self): 
-        print("receiveData")
+        print(">> receiveData")
         while True:
             MyMainWindow.receive_data = MyMainWindow.comSerial.read_all().decode("utf-8")
             time.sleep(0.01) #to advoid the split error: '4520' -> '452','0'
