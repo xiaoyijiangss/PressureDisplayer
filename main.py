@@ -1,21 +1,17 @@
-
-import re
-from PyQt5.QtWidgets import QWidget
-import serial, sys, time
+from PyQt5.QtWidgets import QWidget, QPushButton
+import serial, sys, re
+from tkinter import filedialog
 import serial.tools.list_ports
 import pyqtgraph as pg
-# import pyqtgraph.opengl as gl
-from pyqtgraph import PlotWidget
-from PyQt5 import QtGui
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
-from PyQt5.QtWidgets import *
+import csv
+import pyqtgraph.exporters
+from PyQt5.QtGui import QFont, QIcon, QPixmap
+from PyQt5.QtCore import QThread
 from PyQt5 import QtCore, QtWidgets
-from PyQt5 import QtCore, QtGui, QtWidgets
-from QLed import QLed
-from MainWindow import Ui_MainWindow 
+from qt_material import apply_stylesheet
+from MainWindow import Ui_MainWindow
 from CalibrationWindow import Ui_Clibration
-'''debug: receive_his normal, data_poll error'''
+
 
 class WinClibration(QWidget):
     ''' 
@@ -31,8 +27,6 @@ class WinClibration(QWidget):
 class MainWindowMge(QWidget):
     '''Main GUI Window'''
 
-    CONST_VARIABLE = 'xxx'
-
     def __init__(self) -> None:
         super(MainWindowMge, self).__init__()
         #initiate the UI
@@ -42,17 +36,26 @@ class MainWindowMge(QWidget):
         self.ui.pushButton.clicked.connect(self.click_start)    #defination for button "Stop"
         self.ui.pushButton_10.clicked.connect(self.click_stop)    #defination for button "Stop"
         self.ui.pushButton_7.clicked.connect(self.port_connect)  #connect button7 to 连接
-        
+        self.ui.pushButton_7.setIcon(QIcon('GRAY BALL.ico'))    #set the default icon for “连接”
+        self.ui.pushButton_7.setCheckable(True)     #turn to switch button "连接"
+
+        self.ui.pushButton.setCheckable(True)   #trun to switch button "开始"
+        self.ui.pushButton.setIconSize(QtCore.QSize(24, 24))    #set the size of "开始" ico
+        self.ui.pushButton.clicked.connect(self.click_start)
+        self.ui.pushButton_11.clicked.connect(self.import_csv)  #connect to button11 "导入"
+        self.ui.pushButton_9.clicked.connect(self.click_export) #connect the button9 “导出”
+
+        #modify the logo
+        my_logo = QPixmap('log1.png')
+        self.ui.label_3.setPixmap(my_logo)
+
+
         #port and bandx connection
         self.ui.comboBox.currentIndexChanged.connect(self.port_chosse)
         self.ui.comboBox_2.currentIndexChanged.connect(self.bandx_choose)
-        self.ui.comboBox_2.setCurrentIndex(5)  #modify the default opion
+        self.ui.comboBox_2.setCurrentIndex(6)  #modify the default opion
         self.ui.comboBox.setCurrentIndex(6)
         self.ui.pushButton_2.clicked.connect(self.click_setup)  #connect button2 复位
-        # self._led = QLed(self, onColour=QLed.Green, shape=QLed.Circle)
-        # self._led.value = False
-        # self.ui.gridLayout.addWidget(self._led, 0, 6, 1, 1)
-        '''initialize some parameters for serial'''
 
         self.comSerial = None   #for serial
         self.data_pool = []     #the list recived from serial
@@ -65,10 +68,14 @@ class MainWindowMge(QWidget):
 
 
         #modify the style of axis
+        _text_style = pg.mkPen({'color':'black'})
         _l_style = pg.AxisItem('left')  #initiate the AxisItem
-        _l_style.setStyle(tickFont=QFont('Arial', 5))  # ref https://pyqtgraph.readthedocs.io/en/latest/api_reference/graphicsItems/axisitem.html
+        _l_style.setStyle(tickFont=QFont('Arial', 10))  # ref https://pyqtgraph.readthedocs.io/en/latest/api_reference/graphicsItems/axisitem.html
+        _l_style.setTextPen(_text_style)
+
         _b_style = pg.AxisItem('bottom')
-        _b_style.setStyle(tickFont=QFont('Arial', 5))
+        _b_style.setStyle(tickFont=QFont('Arial', 10))
+        _b_style.setTextPen(_text_style)
         # self.ui.graphicsView is PlotWidget, ref https://pyqtgraph.readthedocs.io/en/latest/api_reference/widgets/plotwidget.html
         main_plotItem = self.ui.graphicsView.getPlotItem()  # get the PlotItem
         main_plotItem.setAxisItems({'left':_l_style, 'bottom':_b_style})
@@ -106,10 +113,16 @@ class MainWindowMge(QWidget):
     def click_start(self):
         '''when click the 开始 button, start thread1 whick recieve data 
         and deal with the data structure'''
-        
-        
-        self.T1.start()
-        self.ui.pushButton.setEnabled(False)
+        if self.ui.pushButton.isChecked():
+            self.T1.start()
+            self.ui.pushButton.setText('停止')
+            self.ui.pushButton.setIcon(QIcon('stop.ico'))   #set stop icon for button
+            self.ui.pushButton_7.setEnabled(False)  #set "连接/断开" unclickabel
+        else:
+            self.T1.terminate()
+            self.ui.pushButton.setText('开始')
+            self.ui.pushButton.setIcon(QIcon('Play.ico'))
+            self.ui.pushButton_7.setEnabled(True)
 
     def click_stop(self):
         '''When click the 结束 button, end thread1'''
@@ -118,13 +131,56 @@ class MainWindowMge(QWidget):
         self.ui.pushButton.setEnabled(True)
     
     def click_setup(self):
-        '''when click the 复位 button, clear data'''
-        
+        '''when click the 复位 button, clear data'''       
         self.y_value.clear()
         self.plot_data_index = 0 
         self.data_pool.clear()
         # self.timeCurve.setData(0)
 
+    def click_export(self):
+        '''export function, with a dialog to choose formation as .csv or .png to export'''
+        export_dia = QtWidgets.QDialog(MyMainWindow)
+        export_dia.setGeometry(120, 120, 250, 220)
+        
+        dia_btn1 = QPushButton(export_dia)
+        dia_btn1.setText('导出表格')
+        dia_btn1.move(30, 100)
+        dia_btn1.clicked.connect(lambda: export_dia.accept())
+
+        dia_btn2 = QPushButton(export_dia)
+        dia_btn2.setText('导出图片')
+        dia_btn2.move(150, 100)
+        dia_btn2.clicked.connect(lambda: export_dia.reject())
+
+        export_dia.accepted.connect(self.export_csv)    #export the csv file
+        exporter = pg.exporters.ImageExporter(self.ui.graphicsView.scene())
+        export_dia.rejected.connect(lambda: exporter.export('monitor.png')) #export the png file
+
+        export_dia.setWindowTitle("导出选项")
+        export_dia.setSizeGripEnabled(False)
+        export_dia.exec()
+
+    
+    def export_csv(self): 
+        '''export a csv file with data recieved from the serial port'''
+        with open('monitor.csv', 'w', newline='') as f:
+            ex_data = [[i] for i in self.data_pool]
+            writer = csv.writer(f, quoting=csv.QUOTE_NONNUMERIC)
+            writer.writerows(ex_data)
+
+    def import_csv(self):
+        '''choose the csv file and plot data of it'''
+        self.T1.terminate() # stop the serial data translation
+        self.click_setup()
+        self.timer.stop()
+        file_name = filedialog.askopenfilename(initialdir='D://software_development_workplace//',\
+                                     filetypes=[('CSV', '*.csv')])
+        with open(file_name, 'r') as f:
+            reader = csv.reader(f)
+            result_str = list(reader)
+            result = [float(i) for [i] in result_str]
+        self.ui.graphicsView.plot(result, pen = pg.mkPen('r', width=1), symbolPen=pg.mkPen(color = (255, 0 ,0)),\
+        symbol='h', symbolSize=2, sybolBrush=('0, 0, 0'))
 
 
     #modify some parameters for serial
@@ -133,16 +189,31 @@ class MainWindowMge(QWidget):
         # connecte the parameters connect to the GUI
         self.portx = self.ui.comboBox_2.currentText()
         self.bandx = int(re.search(r'\d+', self.ui.comboBox.currentText()).group())
-        try:
-            self.comSerial = serial.Serial(port=self.portx, baudrate=self.bandx,\
-                                        timeout=1, bytesize=8)
-            # self._led.value = True
-            self.ui.pushButton_7.setEnabled(False)
-        except Exception as ex:
-            template = "An exception of type {0} occurred. Arguments:\n{1!r}"
-            message = template.format(type(ex).__name__, ex.args)
-            print (message)
-            print('## Connection failed, Plese check the wire and parameters')
+        if self.ui.pushButton_7.isChecked():  #button un clicked876543  '., 
+
+            try:
+                self.comSerial = serial.Serial(port=self.portx, baudrate=self.bandx,\
+                                            timeout=1, bytesize=8)
+                # self._led.value = True
+                # icon1 = QIcon()
+                # icon1.addPixmap(QPixmap('Aqua Ball Green.ico'), mode=QIcon.Disabled)    #have to set the mode, or the icon will trun to gray automticly cause we set the button to disabled
+                # self.ui.pushButton_7.setIcon(icon1)    #set the green icon for "连接"
+                # self.ui.pushButton_7.setEnabled(False)
+                self.ui.pushButton_7.setIcon(QIcon('Aqua Ball Green.ico'))    #set the green icon for “连接”
+                self.ui.pushButton_7.setText('断开')
+                self.ui.pushButton.setEnabled(True)
+            except Exception as ex:
+                template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+                message = template.format(type(ex).__name__, ex.args)
+                print (message)
+                print('## Connection failed, Plese check the wire and parameters')
+
+
+        else:    #button clicked, port opnning
+            self.comSerial.close()
+            self.ui.pushButton_7.setIcon(QIcon('GRAY BALL.ico'))    #set the green icon for “连接”
+            self.ui.pushButton_7.setText('连接')
+            self.ui.pushButton.setEnabled(False)
 
     @staticmethod
     def find_serial():
@@ -212,6 +283,8 @@ if __name__ == "__main__":
 
     #main window
     App = QtWidgets.QApplication(sys.argv)
+    App.setAttribute(QtCore.Qt.AA_Use96Dpi) #to solve the problem that plot's aixes displayed uncorrectly if move the Mainwindow to sencond monitor.
+    # apply_stylesheet(App, theme='dark_cyan.xml')
     MyMainWindow = MainWindowMge()
     MyMainWindow.show()
     

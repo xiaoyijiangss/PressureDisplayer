@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'D:/software_development_workspace/serialplotter/serialPlotter/CalibrationWindow.ui'
+# Form implementation generated from reading ui file 'D:/workspace/serialplotter/serialPlotter/CalibrationWindow.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.7
 #

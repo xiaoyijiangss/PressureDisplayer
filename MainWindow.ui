@@ -6,38 +6,515 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>924</width>
-    <height>437</height>
+    <width>837</width>
+    <height>700</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>600</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
-   <item row="1" column="4">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
+   <property name="topMargin">
+    <number>2</number>
+   </property>
+   <property name="rightMargin">
+    <number>2</number>
+   </property>
+   <property name="bottomMargin">
+    <number>2</number>
+   </property>
+   <property name="spacing">
+    <number>1</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QFrame" name="frame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <property name="sizeHint" stdset="0">
+     <property name="minimumSize">
       <size>
-       <width>245</width>
-       <height>17</height>
+       <width>200</width>
+       <height>200</height>
       </size>
      </property>
-    </spacer>
-   </item>
-   <item row="1" column="2">
-    <widget class="QFrame" name="frame_2">
+     <property name="maximumSize">
+      <size>
+       <width>300</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="whatsThis">
+      <string>Connect</string>
+     </property>
      <property name="frameShape">
-      <enum>QFrame::Box</enum>
+      <enum>QFrame::NoFrame</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
+      <enum>QFrame::Sunken</enum>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <property name="leftMargin">
+       <number>1</number>
+      </property>
+      <property name="topMargin">
+       <number>2</number>
+      </property>
+      <property name="rightMargin">
+       <number>2</number>
+      </property>
+      <property name="bottomMargin">
+       <number>2</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Minimum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>13</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>120</horstretch>
+            <verstretch>120</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>120</height>
+           </size>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="text">
+           <string>TextLabel</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Minimum</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>13</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>微软雅黑</family>
+           </font>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="lineWidth">
+           <number>1</number>
+          </property>
+          <property name="text">
+           <string>波特率</string>
+          </property>
+          <property name="textFormat">
+           <enum>Qt::AutoText</enum>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBox">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="currentText">
+           <string>600</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>600</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1200</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>2400</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>4800</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>9600</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>19200</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>115200</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>60</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>微软雅黑</family>
+           </font>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="text">
+           <string>端口</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBox_2">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="currentText">
+           <string>COM0</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <item>
+           <property name="text">
+            <string>COM0</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM1</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM2</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM3</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM4</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM5</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM6</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM7</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM8</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM9</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM10</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM11</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM12</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM13</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM14</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM15</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM16</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM17</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM18</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM19</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM20</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM21</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM22</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM23</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM24</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM25</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM26</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM27</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM28</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM29</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM30</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM31</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM32</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>COM33</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_7">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>300</width>
+          <height>300</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+         </font>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>连接</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>Green Ball.ico</normaloff>Green Ball.ico</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QPushButton" name="pushButton">
+        <property name="minimumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>300</width>
+          <height>300</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>微软雅黑</family>
@@ -48,12 +525,67 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>delivery/Play.ico</normaloff>delivery/Play.ico</iconset>
+          <normaloff>Play.ico</normaloff>Play.ico</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="autoRepeatDelay">
+         <number>300</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_10">
+        <property name="minimumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>300</width>
+          <height>300</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>微软雅黑</family>
+         </font>
+        </property>
+        <property name="text">
+         <string>新增</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>COMPARE.ico</normaloff>COMPARE.ico</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>36</width>
+          <height>36</height>
+         </size>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_2">
+        <property name="minimumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>300</width>
+          <height>300</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>微软雅黑</family>
@@ -64,28 +596,30 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>delivery/reload.ico</normaloff>delivery/reload.ico</iconset>
+          <normaloff>reload.ico</normaloff>reload.ico</iconset>
         </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_10">
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-         </font>
-        </property>
-        <property name="text">
-         <string>停止</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>delivery/Delete.ico</normaloff>delivery/Delete.ico</iconset>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_11">
+        <property name="minimumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>300</width>
+          <height>300</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>微软雅黑</family>
@@ -96,12 +630,30 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>delivery/Add.ico</normaloff>delivery/Add.ico</iconset>
+          <normaloff>Add.ico</normaloff>Add.ico</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_9">
+        <property name="minimumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>300</width>
+          <height>300</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>微软雅黑</family>
@@ -112,236 +664,36 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>delivery/Down arrow.ico</normaloff>delivery/Down arrow.ico</iconset>
+          <normaloff>Down arrow.ico</normaloff>Down arrow.ico</iconset>
         </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0" colspan="2">
-    <widget class="QFrame" name="frame">
-     <property name="whatsThis">
-      <string>Connect</string>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Box</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="5">
-       <widget class="QPushButton" name="pushButton_7">
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-         </font>
-        </property>
-        <property name="text">
-         <string>连接</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>delivery/Green Ball.ico</normaloff>delivery/Green Ball.ico</iconset>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="6">
-       <widget class="QRadioButton" name="radioButton">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QComboBox" name="comboBox_2">
-        <property name="currentText">
-         <string>com0</string>
-        </property>
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
-        <item>
-         <property name="text">
-          <string>com0</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>com1</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>com2</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>com3</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>com4</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>com5</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>com6</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>com7</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>com8</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>com9</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>com10</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>com11</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>com12</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>com13</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>com14</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-         </font>
-        </property>
-        <property name="text">
-         <string>波特率</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="comboBox">
-        <property name="currentText">
-         <string>600bps</string>
-        </property>
-        <property name="currentIndex">
-         <number>0</number>
-        </property>
-        <item>
-         <property name="text">
-          <string>600bps</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>1200bps</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>2400bps</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>4800bps</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>9600bps</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>19200bps</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>115200bps</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QLabel" name="label_2">
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-         </font>
-        </property>
-        <property name="text">
-         <string>端口</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="4">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
+        <property name="iconSize">
          <size>
-          <width>10</width>
-          <height>20</height>
+          <width>24</width>
+          <height>24</height>
          </size>
         </property>
-       </spacer>
+       </widget>
       </item>
-     </layout>
-     <zorder>label</zorder>
-     <zorder>comboBox</zorder>
-     <zorder>pushButton_7</zorder>
-     <zorder>radioButton</zorder>
-     <zorder>comboBox_2</zorder>
-     <zorder>label_2</zorder>
-     <zorder>horizontalSpacer_2</zorder>
-    </widget>
-   </item>
-   <item row="1" column="3">
-    <widget class="QFrame" name="frame_3">
-     <property name="frameShape">
-      <enum>QFrame::Box</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
        <widget class="QPushButton" name="pushButton_3">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>300</width>
+          <height>300</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>微软雅黑</family>
@@ -352,14 +704,20 @@
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>delivery/Blue Ball.ico</normaloff>delivery/Blue Ball.ico</iconset>
+          <normaloff>CALIBRATION.ico</normaloff>CALIBRATION.ico</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item row="2" column="0" colspan="5">
+   <item row="0" column="1">
     <widget class="PlotWidget" name="graphicsView">
      <property name="font">
       <font>
