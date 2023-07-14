@@ -1,14 +1,14 @@
 from PyQt5.QtWidgets import QWidget, QPushButton
-import serial, sys, re
+import serial, sys, re, csv, copy
+from random import sample
 from tkinter import filedialog
 import serial.tools.list_ports
 import pyqtgraph as pg
-import csv
 import pyqtgraph.exporters
-from PyQt5.QtGui import QFont, QIcon, QPixmap
+from PyQt5.QtGui import QFont, QIcon, QPixmap, QColor
 from PyQt5.QtCore import QThread
 from PyQt5 import QtCore, QtWidgets
-from qt_material import apply_stylesheet
+# from qt_material import apply_stylesheet
 from MainWindow import Ui_MainWindow
 from CalibrationWindow import Ui_Clibration
 
@@ -39,11 +39,16 @@ class MainWindowMge(QWidget):
         self.ui.pushButton_7.setIcon(QIcon('GRAY BALL.ico'))    #set the default icon for “连接”
         self.ui.pushButton_7.setCheckable(True)     #turn to switch button "连接"
 
-        self.ui.pushButton.setCheckable(True)   #trun to switch button "开始"
+        self.ui.pushButton.setCheckable(True)   #turn to switch button "开始"
         self.ui.pushButton.setIconSize(QtCore.QSize(24, 24))    #set the size of "开始" ico
         self.ui.pushButton.clicked.connect(self.click_start)
         self.ui.pushButton_11.clicked.connect(self.import_csv)  #connect to button11 "导入"
         self.ui.pushButton_9.clicked.connect(self.click_export) #connect the button9 “导出”
+
+        # self.ui.pushButton_10.setCheckable(True)    #turn to switch button "新增"
+        self.ui.pushButton_10.setDisabled(True) #"新增" button set as disable, enabled by button "停止"
+        self.ui.pushButton_10.clicked.connect(self.curve_compare)   #connect the button10 "新增"
+
 
         #modify the logo
         my_logo = QPixmap('log1.png')
@@ -51,8 +56,8 @@ class MainWindowMge(QWidget):
 
 
         #port and bandx connection
-        self.ui.comboBox.currentIndexChanged.connect(self.port_chosse)
-        self.ui.comboBox_2.currentIndexChanged.connect(self.bandx_choose)
+        self.ui.comboBox.currentIndexChanged.connect(self.port_chosse)  #translate the port selected in GUI to Serial
+        self.ui.comboBox_2.currentIndexChanged.connect(self.bandx_choose)   #translate the bandx selected in GUI to Serial
         self.ui.comboBox_2.setCurrentIndex(6)  #modify the default opion
         self.ui.comboBox.setCurrentIndex(6)
         self.ui.pushButton_2.clicked.connect(self.click_setup)  #connect button2 复位
@@ -63,8 +68,8 @@ class MainWindowMge(QWidget):
 
         self.data_count = len(self.data_pool)
         self.plot_data_index = 0 #for data_y update
-        MainWindowMge.find_serial()
-        self.T1 = Thread1()
+        MainWindowMge.find_serial() #for developers, print serial status
+        self.T1 = Thread1() #Qthread, recieve the data from serial
 
 
         #modify the style of axis
@@ -77,8 +82,8 @@ class MainWindowMge(QWidget):
         _b_style.setStyle(tickFont=QFont('Arial', 10))
         _b_style.setTextPen(_text_style)
         # self.ui.graphicsView is PlotWidget, ref https://pyqtgraph.readthedocs.io/en/latest/api_reference/widgets/plotwidget.html
-        main_plotItem = self.ui.graphicsView.getPlotItem()  # get the PlotItem
-        main_plotItem.setAxisItems({'left':_l_style, 'bottom':_b_style})
+        self.main_plotItem = self.ui.graphicsView.getPlotItem()  # get the PlotItem
+        self.main_plotItem.setAxisItems({'left':_l_style, 'bottom':_b_style})
 
         #plot setting
         self.y_value = [0]  # y data
@@ -93,14 +98,11 @@ class MainWindowMge(QWidget):
         # to upload the plot by timer
         self.timer = QtCore.QTimer()
         self.timer.setInterval(0)   #50 means 50 millsecond
-        self.timer.timeout.connect(self.update_plot_data)
+        self.timer.timeout.connect(lambda: self.timeCurve.setData(self.y_value))
         self.timer.start()
-    
-    def update_plot_data(self):
 
-        '''define the source data to update the graph'''
-        self.timeCurve.setData(self.y_value)
-
+        self.his_color_index = -1    #+1 everytime when you click button "新增"
+        self.his_colors = []    #append 1 color everytime when you click button "新增"
 
     def bandx_choose(self):
         '''connecte the band to the choosen option of com_box1'''
@@ -118,11 +120,15 @@ class MainWindowMge(QWidget):
             self.ui.pushButton.setText('停止')
             self.ui.pushButton.setIcon(QIcon('stop.ico'))   #set stop icon for button
             self.ui.pushButton_7.setEnabled(False)  #set "连接/断开" unclickabel
+            cur_dataItems = self.main_plotItem.listDataItems()  #list all the curve of the plotItem
+            if cur_dataItems == []: #if reseted, all the dataItem will be removed
+                self.main_plotItem.addItem(self.timeCurve)
         else:
             self.T1.terminate()
             self.ui.pushButton.setText('开始')
             self.ui.pushButton.setIcon(QIcon('Play.ico'))
-            self.ui.pushButton_7.setEnabled(True)
+            self.ui.pushButton_7.setEnabled(True)   #enable the button "连接"
+            self.ui.pushButton_10.setEnabled(True)  #enable the button "新增"
 
     def click_stop(self):
         '''When click the 结束 button, end thread1'''
@@ -135,7 +141,7 @@ class MainWindowMge(QWidget):
         self.y_value.clear()
         self.plot_data_index = 0 
         self.data_pool.clear()
-        # self.timeCurve.setData(0)
+        self.main_plotItem.clear()  #from the main PlotItem remove all items
 
     def click_export(self):
         '''export function, with a dialog to choose formation as .csv or .png to export'''
@@ -160,7 +166,6 @@ class MainWindowMge(QWidget):
         export_dia.setSizeGripEnabled(False)
         export_dia.exec()
 
-    
     def export_csv(self): 
         '''export a csv file with data recieved from the serial port'''
         with open('monitor.csv', 'w', newline='') as f:
@@ -179,17 +184,47 @@ class MainWindowMge(QWidget):
             reader = csv.reader(f)
             result_str = list(reader)
             result = [float(i) for [i] in result_str]
-        self.ui.graphicsView.plot(result, pen = pg.mkPen('r', width=1), symbolPen=pg.mkPen(color = (255, 0 ,0)),\
+        self.ui.graphicsView.plot(result, pen = pg.mkPen('y', width=3), symbolPen=pg.mkPen(color = (255, 0 ,0)),\
         symbol='h', symbolSize=2, sybolBrush=('0, 0, 0'))
 
+    def curve_compare(self):
+        '''plot a new curve of dynamic data, keep the original curve of history static data'''
 
-    #modify some parameters for serial
+
+        ori_data = copy.deepcopy(self.y_value)
+
+        '''modify alterable colors for the new plots' line'''
+        
+        colors = QColor.colorNames()    #list with color's name
+        c_color = sample(colors, 1)[0]     #random str from the list
+        his_color = copy.deepcopy(c_color)  #make sure the last color is different with the new one
+        self.his_colors.append(his_color)
+        
+        while c_color in self.his_colors:
+            c_color = sample(colors, 1)[0]
+
+        self.his_color_index += 1
+        self.ori_dataItem = pg.PlotDataItem(ori_data, pen=pg.mkPen({'color': self.his_colors[self.his_color_index]}, width=3))   #instance a plotDataItem with original data
+        self.main_plotItem.addItem(self.ori_dataItem)   #add the original curve to widget
+        self.T1.start() #updata data from serial 
+
+        self.y_value = []   #clear the history data 
+        self.new_dataItem = pg.PlotDataItem(self.y_value, pen = pg.mkPen({'color': c_color[0], 'width': 5}))
+        self.main_plotItem.addItem(self.new_dataItem)
+        self.timer.timeout.connect(lambda: self.new_dataItem.setData(self.y_value)) #updata curve of new plotting
+
+        '''button logic cotrol'''
+        self.ui.pushButton_10.setEnabled(False) #disable the button "新增"
+        self.ui.pushButton.setChecked(True)  #set the button "开始" to "停止"
+        self.ui.pushButton.setText("停止")
+        self.ui.pushButton.setIcon(QIcon('stop.ico'))   #set stop icon for button
+
 
     def port_connect(self):
         # connecte the parameters connect to the GUI
         self.portx = self.ui.comboBox_2.currentText()
         self.bandx = int(re.search(r'\d+', self.ui.comboBox.currentText()).group())
-        if self.ui.pushButton_7.isChecked():  #button un clicked876543  '., 
+        if self.ui.pushButton_7.isChecked():  #button un clicked  '
 
             try:
                 self.comSerial = serial.Serial(port=self.portx, baudrate=self.bandx,\
@@ -227,7 +262,7 @@ class MainWindowMge(QWidget):
 
 
 class Thread1(QThread):
-    '''recieve data from serial port'''
+    '''recieve data from serial port, updata to self.y_value'''
 
     def __init__(self) -> None:
         super().__init__()
