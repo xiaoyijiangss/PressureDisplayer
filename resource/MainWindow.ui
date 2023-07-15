@@ -20,21 +20,6 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <property name="leftMargin">
-    <number>2</number>
-   </property>
-   <property name="topMargin">
-    <number>2</number>
-   </property>
-   <property name="rightMargin">
-    <number>2</number>
-   </property>
-   <property name="bottomMargin">
-    <number>2</number>
-   </property>
-   <property name="spacing">
-    <number>1</number>
-   </property>
    <item row="0" column="0">
     <widget class="QFrame" name="frame">
      <property name="sizePolicy">
@@ -64,12 +49,12 @@
      <property name="frameShadow">
       <enum>QFrame::Sunken</enum>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="spacing">
-       <number>2</number>
+       <number>3</number>
       </property>
       <property name="leftMargin">
-       <number>1</number>
+       <number>2</number>
       </property>
       <property name="topMargin">
        <number>2</number>
@@ -92,7 +77,7 @@
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>13</width>
+            <width>1</width>
             <height>20</height>
            </size>
           </property>
@@ -101,15 +86,15 @@
         <item>
          <widget class="QLabel" name="label_3">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>120</horstretch>
-            <verstretch>120</verstretch>
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>150</horstretch>
+            <verstretch>150</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>120</width>
-            <height>120</height>
+            <width>150</width>
+            <height>150</height>
            </size>
           </property>
           <property name="layoutDirection">
@@ -133,7 +118,7 @@
           </property>
           <property name="sizeHint" stdset="0">
            <size>
-            <width>13</width>
+            <width>1</width>
             <height>20</height>
            </size>
           </property>
@@ -142,49 +127,29 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="minimumSize">
-           <size>
-            <width>60</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>60</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-           </font>
-          </property>
-          <property name="frameShape">
-           <enum>QFrame::NoFrame</enum>
-          </property>
-          <property name="lineWidth">
-           <number>1</number>
-          </property>
-          <property name="text">
-           <string>波特率</string>
-          </property>
-          <property name="textFormat">
-           <enum>Qt::AutoText</enum>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Fixed</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>10</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QComboBox" name="comboBox">
           <property name="minimumSize">
            <size>
-            <width>80</width>
-            <height>40</height>
+            <width>120</width>
+            <height>55</height>
            </size>
           </property>
           <property name="currentText">
@@ -230,46 +195,12 @@
           </item>
          </widget>
         </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="minimumSize">
-           <size>
-            <width>60</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>60</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-           </font>
-          </property>
-          <property name="layoutDirection">
-           <enum>Qt::LeftToRight</enum>
-          </property>
-          <property name="text">
-           <string>端口</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
         <item>
          <widget class="QComboBox" name="comboBox_2">
           <property name="minimumSize">
            <size>
-            <width>80</width>
-            <height>40</height>
+            <width>120</width>
+            <height>55</height>
            </size>
           </property>
           <property name="currentText">
@@ -462,7 +393,7 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>30</width>
+          <width>120</width>
           <height>30</height>
          </size>
         </property>
@@ -505,7 +436,7 @@
        <widget class="QPushButton" name="pushButton">
         <property name="minimumSize">
          <size>
-          <width>30</width>
+          <width>120</width>
           <height>30</height>
          </size>
         </property>
@@ -542,7 +473,7 @@
        <widget class="QPushButton" name="pushButton_10">
         <property name="minimumSize">
          <size>
-          <width>30</width>
+          <width>120</width>
           <height>30</height>
          </size>
         </property>
@@ -576,7 +507,7 @@
        <widget class="QPushButton" name="pushButton_2">
         <property name="minimumSize">
          <size>
-          <width>30</width>
+          <width>120</width>
           <height>30</height>
          </size>
         </property>
@@ -610,7 +541,7 @@
        <widget class="QPushButton" name="pushButton_11">
         <property name="minimumSize">
          <size>
-          <width>30</width>
+          <width>120</width>
           <height>30</height>
          </size>
         </property>
@@ -644,7 +575,7 @@
        <widget class="QPushButton" name="pushButton_9">
         <property name="minimumSize">
          <size>
-          <width>30</width>
+          <width>120</width>
           <height>30</height>
          </size>
         </property>
@@ -684,7 +615,7 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>30</width>
+          <width>120</width>
           <height>30</height>
          </size>
         </property>

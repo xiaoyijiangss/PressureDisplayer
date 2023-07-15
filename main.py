@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QWidget, QPushButton
-import serial, sys, re, csv, copy
+import serial, sys, re, csv, copy, os
 from random import sample
 from tkinter import filedialog
 import serial.tools.list_ports
@@ -12,6 +12,9 @@ from PyQt5 import QtCore, QtWidgets
 from MainWindow import Ui_MainWindow
 from CalibrationWindow import Ui_Clibration
 
+#get path of resource
+upper_path = os.path.dirname(os.path.abspath(__file__))
+resource_path = upper_path + '\\' + 'resource\\' 
 
 class WinClibration(QWidget):
     ''' 
@@ -36,7 +39,7 @@ class MainWindowMge(QWidget):
         self.ui.pushButton.clicked.connect(self.click_start)    #defination for button "Stop"
         self.ui.pushButton_10.clicked.connect(self.click_stop)    #defination for button "Stop"
         self.ui.pushButton_7.clicked.connect(self.port_connect)  #connect button7 to 连接
-        self.ui.pushButton_7.setIcon(QIcon('GRAY BALL.ico'))    #set the default icon for “连接”
+        self.ui.pushButton_7.setIcon(QIcon(resource_path + 'GRAY BALL.ico'))    #set the default icon for “连接”
         self.ui.pushButton_7.setCheckable(True)     #turn to switch button "连接"
 
         self.ui.pushButton.setCheckable(True)   #turn to switch button "开始"
@@ -51,7 +54,7 @@ class MainWindowMge(QWidget):
 
 
         #modify the logo
-        my_logo = QPixmap('log1.png')
+        my_logo = QPixmap(resource_path + 'log1.png')
         self.ui.label_3.setPixmap(my_logo)
 
 
@@ -118,7 +121,7 @@ class MainWindowMge(QWidget):
         if self.ui.pushButton.isChecked():
             self.T1.start()
             self.ui.pushButton.setText('停止')
-            self.ui.pushButton.setIcon(QIcon('stop.ico'))   #set stop icon for button
+            self.ui.pushButton.setIcon(QIcon(resource_path+'stop.ico'))   #set stop icon for button
             self.ui.pushButton_7.setEnabled(False)  #set "连接/断开" unclickabel
             cur_dataItems = self.main_plotItem.listDataItems()  #list all the curve of the plotItem
             if cur_dataItems == []: #if reseted, all the dataItem will be removed
@@ -126,7 +129,7 @@ class MainWindowMge(QWidget):
         else:
             self.T1.terminate()
             self.ui.pushButton.setText('开始')
-            self.ui.pushButton.setIcon(QIcon('Play.ico'))
+            self.ui.pushButton.setIcon(QIcon('resource_path+Play.ico'))
             self.ui.pushButton_7.setEnabled(True)   #enable the button "连接"
             self.ui.pushButton_10.setEnabled(True)  #enable the button "新增"
 
@@ -209,7 +212,7 @@ class MainWindowMge(QWidget):
         self.T1.start() #updata data from serial 
 
         self.y_value = []   #clear the history data 
-        self.new_dataItem = pg.PlotDataItem(self.y_value, pen = pg.mkPen({'color': c_color[0], 'width': 5}))
+        self.new_dataItem = pg.PlotDataItem(self.y_value, pen = pg.mkPen({'color': c_color, 'width': 5}))
         self.main_plotItem.addItem(self.new_dataItem)
         self.timer.timeout.connect(lambda: self.new_dataItem.setData(self.y_value)) #updata curve of new plotting
 
@@ -217,8 +220,7 @@ class MainWindowMge(QWidget):
         self.ui.pushButton_10.setEnabled(False) #disable the button "新增"
         self.ui.pushButton.setChecked(True)  #set the button "开始" to "停止"
         self.ui.pushButton.setText("停止")
-        self.ui.pushButton.setIcon(QIcon('stop.ico'))   #set stop icon for button
-
+        self.ui.pushButton.setIcon(QIcon(resource_path + 'stop.ico'))   #set stop icon for button
 
     def port_connect(self):
         # connecte the parameters connect to the GUI
@@ -234,7 +236,7 @@ class MainWindowMge(QWidget):
                 # icon1.addPixmap(QPixmap('Aqua Ball Green.ico'), mode=QIcon.Disabled)    #have to set the mode, or the icon will trun to gray automticly cause we set the button to disabled
                 # self.ui.pushButton_7.setIcon(icon1)    #set the green icon for "连接"
                 # self.ui.pushButton_7.setEnabled(False)
-                self.ui.pushButton_7.setIcon(QIcon('Aqua Ball Green.ico'))    #set the green icon for “连接”
+                self.ui.pushButton_7.setIcon(QIcon(resource_path + 'Aqua Ball Green.ico'))    #set the green icon for “连接”
                 self.ui.pushButton_7.setText('断开')
                 self.ui.pushButton.setEnabled(True)
             except Exception as ex:
@@ -246,7 +248,7 @@ class MainWindowMge(QWidget):
 
         else:    #button clicked, port opnning
             self.comSerial.close()
-            self.ui.pushButton_7.setIcon(QIcon('GRAY BALL.ico'))    #set the green icon for “连接”
+            self.ui.pushButton_7.setIcon(QIcon(resource_path + 'GRAY BALL.ico'))    #set the green icon for “连接”
             self.ui.pushButton_7.setText('连接')
             self.ui.pushButton.setEnabled(False)
 
