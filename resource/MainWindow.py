@@ -204,7 +204,7 @@ class Ui_MainWindow(object):
         self.pushButton_3.setObjectName("pushButton_3")
         self.verticalLayout_2.addWidget(self.pushButton_3)
         self.gridLayout.addWidget(self.frame, 0, 0, 1, 1)
-        self.graphicsView = PlotWidget(MainWindow)
+        self.graphicsView = GraphicsLayoutWidget(MainWindow)
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setBold(False)
@@ -275,4 +275,4 @@ class Ui_MainWindow(object):
         self.pushButton_11.setText(_translate("MainWindow", "导入"))
         self.pushButton_9.setText(_translate("MainWindow", "导出"))
         self.pushButton_3.setText(_translate("MainWindow", "标定"))
-from pyqtgraph import PlotWidget
+from pyqtgraph import GraphicsLayoutWidget
