@@ -1,5 +1,6 @@
-from PyQt5.QtWidgets import QWidget, QPushButton
-import serial, sys, re, csv, copy, os
+
+from PyQt5.QtWidgets import QWidget, QPushButton, QDialog, QApplication
+import serial, sys, re, csv, copy, os, time
 from random import sample
 from tkinter import filedialog
 import serial.tools.list_ports
@@ -11,10 +12,39 @@ from PyQt5 import QtCore, QtWidgets
 # from qt_material import apply_stylesheet
 from MainWindow import Ui_MainWindow
 from CalibrationWindow import Ui_Clibration
+# from pyqtgraph import GraphicsScene
 
-#get path of resource
-upper_path = os.path.dirname(os.path.abspath(__file__))
-resource_path = upper_path + '\\' + 'resource\\' 
+
+class Fitments():
+    '''the brush\pen\color\path\font saved here'''
+   
+    #modify the line and symbols for plotting
+    curve_pen = pg.mkPen('r', width=1)     #define the line
+    symbol_pen = pg.mkPen(color = (255, 0 ,0))   #define the symbol)
+
+    #get path of resource
+    upper_path = os.path.dirname(os.path.abspath(__file__))
+    resource_path = upper_path + '\\' + 'resource\\' 
+
+    def __init__(self) -> None:
+        self.his_colors = []
+        self.his_color_index = 0
+        '''modify alterable colors for the new plots' line'''
+
+
+    def alternate_colors(self):
+        '''return alternate Qcolor object'''
+        self.colors = QColor.colorNames()    #list with color's name
+        self.c_color = sample(self.colors, 1)[0]     #random str from the list
+        #make sure the last color is different with the new one
+        self.his_color = copy.deepcopy(self.c_color)  
+        self.his_colors.append(self.his_color)
+    
+        while self.c_color in self.his_colors:
+            self.c_color = sample(self.colors, 1)[0]
+            self.his_color_index += 1
+        return self.c_color, self.his_color
+
 
 class WinClibration(QWidget):
     ''' 
@@ -24,7 +54,7 @@ class WinClibration(QWidget):
         super(WinClibration, self).__init__()
         self.ui = Ui_Clibration() #instantiate the UI class
         self.ui.setupUi(self)
-        self.resize(612, 407)
+        self.resize(300, 248)
         
 
 class MainWindowMge(QWidget):
@@ -33,13 +63,14 @@ class MainWindowMge(QWidget):
     def __init__(self) -> None:
         super(MainWindowMge, self).__init__()
         #initiate the UI
+        self.st = Fitments()    #instance the style class "Ftiments"
         self.ui = Ui_MainWindow()   
         self.ui.setupUi(self)
-        self.resize(1680, 968)
+        self.resize(1220, 628)
         self.ui.pushButton.clicked.connect(self.click_start)    #defination for button "Stop"
         self.ui.pushButton_10.clicked.connect(self.click_stop)    #defination for button "Stop"
         self.ui.pushButton_7.clicked.connect(self.port_connect)  #connect button7 to 连接
-        self.ui.pushButton_7.setIcon(QIcon(resource_path + 'GRAY BALL.ico'))    #set the default icon for “连接”
+        self.ui.pushButton_7.setIcon(QIcon(Fitments.resource_path + 'GRAY BALL.ico'))    #set the default icon for “连接”
         self.ui.pushButton_7.setCheckable(True)     #turn to switch button "连接"
 
         self.ui.pushButton.setCheckable(True)   #turn to switch button "开始"
@@ -54,7 +85,7 @@ class MainWindowMge(QWidget):
 
 
         #modify the logo
-        my_logo = QPixmap(resource_path + 'log1.png')
+        my_logo = QPixmap(Fitments.resource_path + 'log1.png')
         self.ui.label_3.setPixmap(my_logo)
 
 
@@ -74,29 +105,28 @@ class MainWindowMge(QWidget):
         MainWindowMge.find_serial() #for developers, print serial status
         self.T1 = Thread1() #Qthread, recieve the data from serial
 
-
-        #modify the style of axis
-        _text_style = pg.mkPen({'color':'black'})
-        _l_style = pg.AxisItem('left')  #initiate the AxisItem
-        _l_style.setStyle(tickFont=QFont('Arial', 10))  # ref https://pyqtgraph.readthedocs.io/en/latest/api_reference/graphicsItems/axisitem.html
-        _l_style.setTextPen(_text_style)
-
-        _b_style = pg.AxisItem('bottom')
-        _b_style.setStyle(tickFont=QFont('Arial', 10))
-        _b_style.setTextPen(_text_style)
-        # self.ui.graphicsView is PlotWidget, ref https://pyqtgraph.readthedocs.io/en/latest/api_reference/widgets/plotwidget.html
-        self.main_plotItem = self.ui.graphicsView.getPlotItem()  # get the PlotItem
-        self.main_plotItem.setAxisItems({'left':_l_style, 'bottom':_b_style})
-
         #plot setting
         self.y_value = [0]  # y data
-        self.ui.graphicsView.setBackground('w')
 
-        _pen = pg.mkPen('r', width=1)     #define the line
-        _symbol_pen = pg.mkPen(color = (255, 0 ,0))   #define the symbol)
-        self.timeCurve = self.ui.graphicsView.plot(self.y_value, pen = _pen, symbolPen=_symbol_pen,\
-        symbol='h', symbolSize=2, sybolBrush=('0, 0, 0'))
+        self.graphs = self.ui.graphicsView  #instance the graphicslayoutwidget
+        self.graphs.setBackground('w')  #set white background
+        #modify the style of axis
+        _text_style = pg.mkPen({'color':'black'})
+        self.l_style = pg.AxisItem('left')  #initiate the AxisItem
+        # ref https://pyqtgraph.readthedocs.io/en/latest/api_reference/graphicsItems/axisitem.html
+        self.l_style.setStyle(tickFont=QFont('Arial', 8))  
+        self.l_style.setTextPen(_text_style)
 
+        self.b_style = pg.AxisItem('bottom')
+        self.b_style.setStyle(tickFont=QFont('Arial', 8))
+        self.b_style.setTextPen(_text_style)
+
+        self.main_plotItem = self.graphs.addPlot()  # adding PlotItem to graphics
+        self.main_plotItem.setAutoPan(y=True)
+        self.main_plotItem.setAxisItems({'left':self.l_style, 'bottom':self.b_style}) #set the aixs' style
+        self.main_plotItem.setMenuEnabled(False)    #disable the right clicking
+        self.timeCurve = self.main_plotItem.plot(self.y_value, pen = Fitments.curve_pen, symbolPen=Fitments.symbol_pen,\
+        symbol='h', symbolSize=2, sybolBrush=('0, 0, 0'))   #instance the PlotDataItem
 
         # to upload the plot by timer
         self.timer = QtCore.QTimer()
@@ -107,29 +137,38 @@ class MainWindowMge(QWidget):
         self.his_color_index = -1    #+1 everytime when you click button "新增"
         self.his_colors = []    #append 1 color everytime when you click button "新增"
 
+        #the current row for adding plotting
+        self.c_row = 0
+
+
     def bandx_choose(self):
         '''connecte the band to the choosen option of com_box1'''
         return self.ui.comboBox_2.currentText()
-    
+
     def port_chosse(self):
         '''connecte the port to the choosen option of com_box2'''
         return self.ui.comboBox.currentText()
-    
+
     def click_start(self):
         '''when click the 开始 button, start thread1 whick recieve data 
         and deal with the data structure'''
         if self.ui.pushButton.isChecked():
             self.T1.start()
             self.ui.pushButton.setText('停止')
-            self.ui.pushButton.setIcon(QIcon(resource_path+'stop.ico'))   #set stop icon for button
+            self.ui.pushButton.setIcon(QIcon(Fitments.resource_path+'stop.ico'))   #set stop icon for button
             self.ui.pushButton_7.setEnabled(False)  #set "连接/断开" unclickabel
-            cur_dataItems = self.main_plotItem.listDataItems()  #list all the curve of the plotItem
-            if cur_dataItems == []: #if reseted, all the dataItem will be removed
-                self.main_plotItem.addItem(self.timeCurve)
+
+            if not self.graphs.getItem(0,0):    #if all plot deleted
+                self.main_plotItem = self.graphs.addPlot()  # adding PlotItem to graphics
+                self.main_plotItem.setAxisItems({'left':self.l_style, 'bottom':self.b_style}) #set the aixs' style
+
+                self.timeCurve = self.main_plotItem.plot(self.y_value, pen = Fitments.curve_pen, symbolPen=Fitments.symbol_pen,\
+        symbol='h', symbolSize=2, sybolBrush=('0, 0, 0'))   #instance the PlotDataItem
+                # self.timeCurve.setMenuEnabled()
         else:
             self.T1.terminate()
             self.ui.pushButton.setText('开始')
-            self.ui.pushButton.setIcon(QIcon('resource_path+Play.ico'))
+            self.ui.pushButton.setIcon(QIcon(Fitments.resource_path + 'Play.ico'))
             self.ui.pushButton_7.setEnabled(True)   #enable the button "连接"
             self.ui.pushButton_10.setEnabled(True)  #enable the button "新增"
 
@@ -138,14 +177,46 @@ class MainWindowMge(QWidget):
         self.T1.terminate()
         self.ui.pushButton_10.setEnabled(True)
         self.ui.pushButton.setEnabled(True)
-    
+        
+
     def click_setup(self):
-        '''when click the 复位 button, clear data'''       
+        '''when click the 复位 button, clear data'''  
+        self.T1.terminate() #stop to updata the serial data 
+        self.timer.stop()   #stop the timer   
         self.y_value.clear()
         self.plot_data_index = 0 
+        self.c_row = 0
         self.data_pool.clear()
-        self.main_plotItem.clear()  #from the main PlotItem remove all items
+        self.graphs.clear()  #from the graphiclayoutWidget remove all items
+        #reset the main plot Item to the graphicLayoutWidge
+        time.sleep(0.1)
+        self.main_plotItem = self.graphs.addPlot()  # adding PlotItem to graphics
+        self.main_plotItem.setMenuEnabled(False)    #disable the right clicking
+        self.timeCurve = self.main_plotItem.plot(self.y_value, pen = Fitments.curve_pen, symbolPen=Fitments.symbol_pen,\
+        symbol='h', symbolSize=2, sybolBrush=('0, 0, 0'))   #instance the PlotDataItem
+        time.sleep(0.5)
+        _text_style = pg.mkPen({'color':'black'})
+        self.l_style = pg.AxisItem('left')  #initiate the AxisItem
+        # ref https://pyqtgraph.readthedocs.io/en/latest/api_reference/graphicsItems/axisitem.html
+        self.l_style.setStyle(tickFont=QFont('Arial', 10))  
+        self.l_style.setTextPen(_text_style)
 
+        self.b_style = pg.AxisItem('bottom')
+        self.b_style.setStyle(tickFont=QFont('Arial', 10))
+        self.b_style.setTextPen(_text_style)
+        self.main_plotItem.setAxisItems({'left':self.l_style, 'bottom':self.b_style}) #set the aixs' style
+        self.T1.start() #start the updata from serial
+        self.timer.start()  #start to updata the main plot
+
+
+        #if the "连接" 状态，点击复位后不能再断开，因为进程报错
+        self.ui.pushButton_7.setEnabled(False)
+        #set the button "开始/停止" 
+        self.ui.pushButton.setChecked(True)
+        self.ui.pushButton.setText('停止')
+        self.ui.pushButton.setIcon(QIcon(Fitments.resource_path+'stop.ico'))   #set stop icon for button
+
+        
     def click_export(self):
         '''export function, with a dialog to choose formation as .csv or .png to export'''
         export_dia = QtWidgets.QDialog(MyMainWindow)
@@ -187,40 +258,55 @@ class MainWindowMge(QWidget):
             reader = csv.reader(f)
             result_str = list(reader)
             result = [float(i) for [i] in result_str]
-        self.ui.graphicsView.plot(result, pen = pg.mkPen('lightseagreen', width=2), symbolPen=pg.mkPen(color = 'lightseagreen'),\
+        self.main_plotItem.plot(result, pen = pg.mkPen('lightseagreen', width=2), symbolPen=pg.mkPen(color = 'lightseagreen'),\
         symbol='h', symbolSize=1, sybolBrush=('0, 0, 0'))
+        self.main_plotItem.setMenuEnabled(False)    #disable the right clicking
+
 
     def curve_compare(self):
         '''plot a new curve of dynamic data, keep the original curve of history static data'''
 
-
         ori_data = copy.deepcopy(self.y_value)
-
-        '''modify alterable colors for the new plots' line'''
+        self.y_value = []   #clear the history data
         
-        colors = QColor.colorNames()    #list with color's name
-        c_color = sample(colors, 1)[0]     #random str from the list
-        his_color = copy.deepcopy(c_color)  #make sure the last color is different with the new one
-        self.his_colors.append(his_color)
-        
-        while c_color in self.his_colors:
-            c_color = sample(colors, 1)[0]
+        '''get alternate color from Fitments'''
+        c_color = self.st.alternate_colors()[0]
+        his_color = self.st.alternate_colors()[1]
 
-        self.his_color_index += 1
-        self.ori_dataItem = pg.PlotDataItem(ori_data, pen=pg.mkPen({'color': self.his_colors[self.his_color_index]}, width=3))   #instance a plotDataItem with original data
-        self.main_plotItem.addItem(self.ori_dataItem)   #add the original curve to widget
+        self.c_row += 1
+        ori_plot = self.graphs.addPlot(col = 0, row=self.c_row) # adding PlotItem to graphics
+        
+
+        #link the Yaxi together with the mainplotItem, ref:https://pyqtgraph.readthedocs.io/en/latest/api_reference/graphicsItems/viewbox.html
+        ori_view_box = ori_plot.getViewBox()    #get the ViewBox object
+        main_view_box = self.main_plotItem.getViewBox()    #get the ViewBox object
+        ori_view_box.linkView(main_view_box.YAxis, main_view_box)  
+        #set the style of aix for ori plot
+        ls = pg.AxisItem('left', textPen=pg.mkPen({'color':'black'}))
+        ls.setStyle(tickFont=QFont('Arial', 8))
+        bs = pg.AxisItem('bottom', textPen=pg.mkPen({'color':'black'}))
+        bs.setStyle(tickFont=QFont('Arial', 8))
+        ori_plot.setAxisItems({'left':ls, 'bottom':bs})
+        ori_plot.setMenuEnabled(False)    #disable the right clicking
+
+
+        oriCurve = ori_plot.plot(ori_data, pen = pg.mkPen({'color':his_color, 'width':3}), symbolPen=Fitments.symbol_pen,\
+        symbol='h', symbolSize=2, sybolBrush=('0, 0, 0'))   #plotting the data to plotItem with alternate color
+
+        self.timeCurve.setPen({'color':c_color, 'width':4}) #reset the color of dynamic plotting
+
+
         self.T1.start() #updata data from serial 
 
-        self.y_value = []   #clear the history data 
-        self.new_dataItem = pg.PlotDataItem(self.y_value, pen = pg.mkPen({'color': c_color, 'width': 5}))
-        self.main_plotItem.addItem(self.new_dataItem)
-        self.timer.timeout.connect(lambda: self.new_dataItem.setData(self.y_value)) #updata curve of new plotting
+
+     
+        # self.timer.timeout.connect(lambda: new_plot.setData(self.y_value)) #updata curve of new plotting
 
         '''button logic cotrol'''
         self.ui.pushButton_10.setEnabled(False) #disable the button "新增"
         self.ui.pushButton.setChecked(True)  #set the button "开始" to "停止"
         self.ui.pushButton.setText("停止")
-        self.ui.pushButton.setIcon(QIcon(resource_path + 'stop.ico'))   #set stop icon for button
+        self.ui.pushButton.setIcon(QIcon(Fitments.resource_path + 'stop.ico'))   #set stop icon for button
 
     def port_connect(self):
         # connecte the parameters connect to the GUI
@@ -231,12 +317,7 @@ class MainWindowMge(QWidget):
             try:
                 self.comSerial = serial.Serial(port=self.portx, baudrate=self.bandx,\
                                             timeout=1, bytesize=8)
-                # self._led.value = True
-                # icon1 = QIcon()
-                # icon1.addPixmap(QPixmap('Aqua Ball Green.ico'), mode=QIcon.Disabled)    #have to set the mode, or the icon will trun to gray automticly cause we set the button to disabled
-                # self.ui.pushButton_7.setIcon(icon1)    #set the green icon for "连接"
-                # self.ui.pushButton_7.setEnabled(False)
-                self.ui.pushButton_7.setIcon(QIcon(resource_path + 'Aqua Ball Green.ico'))    #set the green icon for “连接”
+                self.ui.pushButton_7.setIcon(QIcon(Fitments.resource_path + 'Aqua Ball Green.ico'))    #set the green icon for “连接”
                 self.ui.pushButton_7.setText('断开')
                 self.ui.pushButton.setEnabled(True)
             except Exception as ex:
@@ -245,10 +326,9 @@ class MainWindowMge(QWidget):
                 print (message)
                 print('## Connection failed, Plese check the wire and parameters')
 
-
         else:    #button clicked, port opnning
             self.comSerial.close()
-            self.ui.pushButton_7.setIcon(QIcon(resource_path + 'GRAY BALL.ico'))    #set the green icon for “连接”
+            self.ui.pushButton_7.setIcon(QIcon(Fitments.resource_path + 'GRAY BALL.ico'))    #set the green icon for “连接”
             self.ui.pushButton_7.setText('连接')
             self.ui.pushButton.setEnabled(False)
 
@@ -312,16 +392,23 @@ class Thread2(QThread):
 
 
 
-
-
-
-
 if __name__ == "__main__":
+
+    '''to solve the axis unexpected offset problem
+    solution1:    
+    # ref: https://pyqtgraph.readthedocs.io/en/latest/getting_started/how_to_use.html?highlight=mkqapp#hidpi-displays
+    '''
+    QApplication.setHighDpiScaleFactorRoundingPolicy(QtCore.Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+    QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+    #solution2:(don't work for me)
+    #https://cloud.tencent.com/developer/ask/sof/107827481?from=16139
+
 
     #main window
     App = QtWidgets.QApplication(sys.argv)
     App.setAttribute(QtCore.Qt.AA_Use96Dpi) #to solve the problem that plot's aixes displayed uncorrectly if move the Mainwindow to sencond monitor.
     # apply_stylesheet(App, theme='dark_cyan.xml')
+
     MyMainWindow = MainWindowMge()
     MyMainWindow.show()
     
