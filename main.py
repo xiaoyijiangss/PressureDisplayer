@@ -215,6 +215,8 @@ class MainWindowMge(QWidget):
         self.ui.pushButton.setChecked(True)
         self.ui.pushButton.setText('停止')
         self.ui.pushButton.setIcon(QIcon(Fitments.resource_path+'stop.ico'))   #set stop icon for button
+        #set the button "新增"
+        self.ui.pushButton_10.setEnabled(False)
 
         
     def click_export(self):
